@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <unordered_map>
+#include <map>
+#include <climits>
+#include <cstdio>
+using namespace std;
+
+int main()
+{
+	vector<int> capacity;
+	vector<int> amount;
+	int x, y;
+	for (int i = 0; i < 3; i++)
+	{
+		cin >> x >> y;
+		capacity.push_back(x);
+		amount.push_back(y);
+	}
+	int current = 0;
+	for (int i = 0; i < 100; i++)
+	{
+		if (current == 2)
+		{
+			int amt = min(amount[current], capacity[0] - amount[0]);
+			amount[0] += amt;
+			amount[current] -= amt;
+			current = 0;
+		}
+		else
+		{
+			int amt = min(amount[current], capacity[current + 1] - amount[current + 1]);
+			amount[current + 1] += amt;
+			amount[current] -= amt;
+			current++;
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		cout << amount[i] << endl;
+	}
+}
