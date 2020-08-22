@@ -1,0 +1,99 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <unordered_map>
+#include <map>
+#include <climits>
+#include <cstdio>
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(0); cin.tie(0);
+	int n, x, z, c;
+	string name;
+	cin >> n;
+	vector<pair<int, pair<int, int>>> entries; //day, name, amount changed
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x >> name >> z;
+		if (name == "Bessie") c = 0;
+		if (name == "Elsie") c = 1;
+		if (name == "Mildred") c = 2;
+		entries.push_back({ x, {c, z} });
+	}
+	sort(entries.begin(), entries.end());
+
+	int Eldrid = 7;
+	int Mildred = 7;
+	int Bessie = 7;
+	int count = 0;
+	vector<int> top = {0, 1, 2};
+	for (auto element : entries)
+	{
+		int currentINT = 0;
+		int current = element.second.first;
+		int change = element.second.second;
+		if (current == 1) 
+		{
+			Eldrid += change;
+			currentINT = Eldrid;
+		}
+		if (current == 2) 
+		{
+			Mildred += change;
+			currentINT = Mildred;
+		}
+		if (current == 0) 
+		{
+			Bessie += change;
+			currentINT = Bessie;
+		}
+		if (find(top.begin(), top.end(), current) != top.end() && change < 0)
+		{
+			if (currentINT >= Eldrid && currentINT >= Mildred && currentINT >= Bessie)
+			{
+				continue;
+			}
+			else
+			{
+				remove(top.begin(), top.end(), current);
+				count++;
+			}
+		}
+		if (find(top.begin(), top.end(), current) != top.end() && change > 0) {
+			if (currentINT >= Eldrid&& currentINT >= Mildred&& currentINT >= Bessie)
+			{
+				for (int i = 0; i < top.size(); i++)
+				{
+					top.erase(top.begin());
+				}
+				top.push_back(current);
+				count++;
+			}
+		}
+		bool stop = false;
+		if (find(top.begin(), top.end(), current) == top.end())
+		{
+			for (int i = 0; i < top.size(); i++)
+			{
+				if (currentINT > top[i])
+				{
+					top.clear();
+					top.push_back(current);
+					count++;
+					stop = true;
+				}
+			}
+
+			if (currentINT >= Eldrid && currentINT >= Mildred && currentINT >= Bessie && stop == false)
+			{
+				top.push_back(current);
+				count++;
+
+			}
+		}
+	}
+	cout << count;
+}
