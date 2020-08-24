@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <unordered_map>
+#include <map>
+#include <climits>
+#include <cstdio>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+	ifstream fin("lostcow.in");
+	ofstream fout("lostcow.out");
+	int x, y;
+	fin >> x >> y;
+	bool found = false;
+	double currentIncrement = 0.5;
+	int distanceTraveled = 0;
+	int current = x;
+	while (found == false) 
+	{
+		distanceTraveled += abs(current - (x + (2 * currentIncrement)));
+		current = x + (2 * currentIncrement);
+		currentIncrement *= 2;
+		if (y > x)
+		{
+			if (current >= y)
+			{
+				distanceTraveled -= abs(current - y);
+				found = true;
+			}
+		}
+		else 
+		{
+			if (current <= y)
+			{
+				distanceTraveled -= abs(current - y);
+				found = true;
+			}
+		}
+		currentIncrement *= -1;
+	}
+	fout << distanceTraveled;
+}
