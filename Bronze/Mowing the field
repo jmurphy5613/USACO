@@ -1,0 +1,109 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <unordered_map>
+#include <map>
+#include <climits>
+#include <cstdio>
+#include <fstream>
+using namespace std;
+bool points[2001][2001];
+int pointsTime[2001][2001];
+int main()
+{
+	ifstream fin("mowing.in");
+	ofstream fout("mowing.out");
+	int n, y;
+	cin >> n;
+	char x;
+	vector<pair<char, int>> directions;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x >> y;
+		directions.push_back({ x, y });
+	}
+	int cX = 1000; 
+	int cY = 1000;
+	int minimumX = 10000;
+	int time = 0;
+	for (auto element : directions) 
+	{
+		if (element.first == 'N')
+		{
+			for (int i = 1; i <= element.second; i++)
+			{
+				time++;
+				if (points[cX][cY + i] == true)
+				{
+					if (minimumX > (time - pointsTime[cX][cY + i])) minimumX = time - pointsTime[cX][cY + i];
+				}
+				else
+				{
+					points[cX][cY + i] = true;
+					pointsTime[cX][cY + i] = time;
+				}
+			}
+			cY += element.second;
+		}
+		if (element.first == 'S')
+		{
+			for (int i = 1; i <= element.second; i++)
+			{
+				time++;
+				if (points[cX][cY - i] == true)
+				{
+					if (minimumX > (time - pointsTime[cX][cY - i])) minimumX = time - pointsTime[cX][cY - i];
+				}
+				else
+				{
+					points[cX][cY - i] = true;
+					pointsTime[cX][cY - i] = time;
+				}
+			}
+			cY -= element.second;
+		}
+		if (element.first == 'W')
+		{
+			for (int i = 1; i <= element.second; i++)
+			{
+				time++;
+				if (points[cX - i][cY] == true)
+				{
+					if (minimumX > (time - pointsTime[cX - i][cY])) minimumX = time - pointsTime[cX - i][cY];
+				}
+				else
+				{
+					points[cX - i][cY] = true;
+					pointsTime[cX - i][cY] = time;
+				}
+			}
+			cX -= element.second;
+		}
+		if (element.first == 'E')
+		{
+			for (int i = 1; i <= element.second; i++)
+			{
+				time++;
+				if (points[cX + i][cY] == true)
+				{
+					if (minimumX > (time - pointsTime[cX + i][cY])) minimumX = time - pointsTime[cX + i][cY];
+				}
+				else
+				{
+					points[cX + i][cY] = true;
+					pointsTime[cX + i][cY] = time;
+				}
+			}
+			cX += element.second;
+		}
+	}
+	if (minimumX == 10000)
+	{
+		cout << -1;
+	}
+	else 
+	{
+		cout << minimumX;
+	}
+}
