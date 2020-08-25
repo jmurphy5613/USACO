@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <unordered_map>
+#include <map>
+#include <climits>
+#include <cstdio>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+	ifstream fin("cowqueue.in");
+	ofstream fout("cowqueue.out");
+	int n, x, y;
+	fin >> n;
+	vector<pair<int, int>> time;
+	for (int i = 0; i < n; i++)
+	{
+		fin >> x >> y;
+		time.push_back({ x, y });
+	}
+	sort(time.begin(), time.end());
+	int lastEnding = 0;
+	for (auto element : time)
+	{
+		if (element.first > lastEnding)
+		{
+			lastEnding = element.first + element.second;
+			continue;
+		}
+		if (element.first <= lastEnding)
+		{
+			lastEnding += element.second;
+		}
+	}
+	fout << lastEnding;
+}
