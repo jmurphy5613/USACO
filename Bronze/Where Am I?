@@ -1,0 +1,40 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <unordered_set>
+using namespace std;
+
+int main(void)
+{
+    ifstream fin("whereami.in");
+    ofstream fout("whereami.out");
+    int n;
+    string colors;
+    fin >> n;
+    fin >> colors;
+    unordered_set<string> strings;
+    for (int len = 1; len < n; len++)
+    {
+        bool found = true;
+        for (int j = 0; j < n; j++)
+        {
+            string temp = colors.substr(j, len);
+            if (temp.length() != len) continue;
+            if (strings.find(temp) == strings.end()) strings.insert(temp);
+            else if (strings.find(temp) != strings.end())
+            {
+                found = false;
+                break;
+            }
+        }
+        if (found == true)
+        {
+            fout << len;
+            return(0);
+        }
+    }
+}
