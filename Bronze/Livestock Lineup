@@ -1,0 +1,55 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main(void)
+{
+    ifstream fin("whereami.in");
+    ofstream fout("whereami.out");
+    int n;
+    cin >> n;
+    vector<pair<string, string>> constraints;
+    for (int i = 0; i < n; i++)
+    {
+        string line[7];
+        for (int j = 0; j < 6; j++) cin >> line[j];
+        constraints.push_back({ line[0], line[5] });
+    }
+    vector<string> names = { "Bessie", "Buttercup", "Belinda", "Beatrice", "Bella", "Blue", "Betsy", "Sue"};
+    sort(names.begin(), names.end());
+    do
+    {
+        bool correct = true;
+        for (auto c : constraints) 
+        {
+            bool good = false;
+            for (int i = 0; i + 1 < names.size(); i++)
+            {   
+                if (names[i] == c.first && names[i + 1] == c.second)
+                {
+                    good = true;
+                }
+                if (names[i] == c.second && names[i + 1] == c.first)
+                {
+                    good = true;
+                }
+            }
+            if (!good)
+            {
+                correct = false;
+            }
+        }
+        if (correct)
+        {
+            for (int i = 0; i < names.size(); i++) cout << names[i] << endl;
+            return (0);
+        }
+    } while (next_permutation(names.begin(), names.end()));
+}
