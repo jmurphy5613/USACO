@@ -1,0 +1,31 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+int intersection(int x1, int y1, int x2, int y2, int X1, int Y1, int X2, int Y2)
+{
+    int iLeft = max(x1, X1);
+    int iRight = min(x2, X2);
+    int iTop = max(y1, Y1);
+    int iBottom = min(y2, Y2);
+    int intersection = abs((iRight - iLeft) * (iTop - iBottom));
+    int area = abs(x2 - x1) * abs(y2 - y1);
+    return area - intersection;
+}
+int main(void)
+{
+    ifstream fin("billboard.in");
+    ofstream fout("billboard.out");
+    int B1x1, B1y1, B1x2, B1y2, B2x1, B2y1, B2x2, B2y2, Tx1, Ty1, Tx2, Ty2;
+    fin >> B1x1 >> B1y1 >> B1x2 >> B1y2 >> B2x1 >> B2y1 >> B2x2 >> B2y2 >> Tx1 >> Ty1 >> Tx2 >> Ty2;
+    int total = 0;
+    total += intersection(B1x1, B1y1, B1x2, B1y2, Tx1, Ty1, Tx2, Ty2);
+    total += intersection(B2x1, B2y1, B2x2, B2y2, Tx1, Ty1, Tx2, Ty2);
+    fout << total;
+}
