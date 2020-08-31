@@ -1,0 +1,41 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main(void)
+{
+    ifstream fin("buckets.in");
+    ofstream fout("buckets.out");
+    int Bx, By, Rx, Ry, Lx, Ly;
+    for (int i = 0; i < 100; i++)
+    {
+        char current;
+        fin >> current;
+        if (current == 'B')
+        {
+            Bx = i % 10;
+            By = i / 10;
+        }
+        if (current == 'R')
+        {
+            Rx = i % 10;
+            Ry = i / 10;
+        }
+        if (current == 'L')
+        {
+            Lx = i % 10;
+            Ly = i / 10;
+        }
+    }
+    int difference = 0;
+    if (Lx == Bx && Bx == Rx || Ly == By && By == Ry) difference += 1;
+    difference += abs(By - Ly) + abs(Bx - Lx);
+    fout << difference - 1;
+}
