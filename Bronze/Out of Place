@@ -1,0 +1,60 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main(void)
+{
+    ifstream fin("outofplace.in");
+    ofstream fout("outofplace.out");
+    int n;
+    fin >> n;
+    vector<int> A(n);
+    for (int i = 0; i < n; i++)
+    {
+        fin >> A[i];
+    }
+    int i = 0;
+    int j = 0;
+    bool isSmall = false;
+    bool solved = false;
+    int smallest = A[i];
+    int SmallestJ{};
+    int moves = 0;
+    while (solved == false)
+    {
+
+        j++;
+        if (i == n - 1)
+        {
+            solved = true;
+            break;
+        }
+        if (A[j] < smallest)
+        {
+            smallest = A[j];
+            isSmall = true;
+            SmallestJ = j;
+        }        
+        if (j == n - 1)
+        {
+            if (isSmall == true)
+            {
+                iter_swap(A.begin() + i, A.begin() + SmallestJ);
+                isSmall = false;
+                moves++;
+            }
+            i++;
+            j = i;
+            smallest = A[i];
+
+        }
+    }
+    fout << moves;
+}
