@@ -1,0 +1,32 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main(void)
+{
+    ifstream fin("swap.in");
+    ofstream fout("swap.out");
+    int N, K, A1, A2, B1, B2;
+    fin >> N >> K >> A1 >> A2 >> B1 >> B2;
+    vector<int> A(N);
+    for (int i = 0; i < N; i++) A[i] = i + 1;
+    A.push_back(0);
+    for (int i = 0; i < K; i++)
+    {
+        reverse(A.begin() + A1 - 1, A.begin() + A2);
+        reverse(A.begin() + B1 - 1, A.begin() + B2);
+    }
+    
+    for (int i = 0; i < N; i++)
+    {
+        fout << A[i] << endl;
+    }
+
+}
