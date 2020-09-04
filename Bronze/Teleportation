@@ -1,0 +1,50 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main(void)
+{
+    ifstream fin("teleport.in");
+    ofstream fout("teleport.out");
+    int a, b, x, y, totalLeast, totalMost;
+    fin >> a >> b >> x >> y;
+    if (a < b)
+    {
+        if (x < y) 
+        {
+            totalLeast = abs(x - a);
+            totalMost = abs(y - b);
+        }
+        else 
+        {
+            totalLeast = abs(a - y);
+            totalMost = abs(x - b);
+        }
+    }
+    else
+    {
+        if (x < y)
+        {
+            totalLeast = abs(x - b);
+            totalMost = abs(y - a);
+        }
+        else
+        {
+            totalLeast = abs(b - y);
+            totalMost = abs(x - a);
+        }
+    }
+    if (abs(a - b) < abs(totalLeast + totalMost))
+    {
+        fout << abs(a - b);
+        return 0;
+    }
+    fout << abs(totalLeast + totalMost);
+}
