@@ -1,0 +1,38 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+int A[100];
+int B[100];
+string C[100];
+int main(void)
+{
+    ifstream fin("traffic.in");
+    ofstream fout("traffic.out");
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) cin >> C[i] >> A[i] >> B[i];
+
+    int a = -999999999, b = 999999999;
+    for (int i = 0; i < n; i++)
+    {
+        if (C[i] == "on") { a += A[i]; b += B[i]; }
+        if (C[i] == "none") { a = max(a, A[i]); b = min(b, B[i]); }
+        if (C[i] == "off") { a -= B[i]; b -= A[i]; }
+    }
+    cout << a << " " << b << endl;
+    a = -999999999, b = 999999999;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (C[i] == "on") { a -= A[i]; b -= B[i]; }
+        if (C[i] == "none") { a = max(a, A[i]); b = min(b, B[i]); }
+        if (C[i] == "off") { a += B[i]; b += A[i]; }
+    }
+    cout << a << " " << b;
+}
