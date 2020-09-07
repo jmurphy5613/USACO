@@ -1,0 +1,78 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main(void)
+{
+    ifstream fin("revegetate.in");
+    ofstream fout("revegetate.out");
+    int n, m;
+    fin >> n >> m;
+    vector<int> One;
+    vector<int> Two;
+    vector<int> Three;
+    vector<int> Four;
+    vector<vector<int>> A(m, vector<int>(2));
+    vector<int> N(n + 1);
+    for (int i = 0; i < m; i++)
+    {
+        vector<int> temp(2);
+        fin >> temp[0] >> temp[1];
+        A[i] = temp;
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        if (find(One.begin(), One.end(), i) == One.end()) 
+        {
+            N[i] = 1;
+
+            for (int k = 0; k < m; k++)
+            {
+                if (A[k][0] == i) One.push_back(A[k][1]);
+                if (A[k][1] == i) One.push_back(A[k][0]);
+            }
+            continue;
+        }
+        if (find(Two.begin(), Two.end(), i) == Two.end())
+        {
+            N[i] = 2;
+            for (int k = 0; k < m; k++)
+            {
+                if (A[k][0] == i) Two.push_back(A[k][1]);
+                if (A[k][1] == i) Two.push_back(A[k][0]);
+            }           
+            continue;
+        }
+        if (find(Three.begin(), Three.end(), i) == Three.end())
+        {
+            N[i] = 3;
+            for (int k = 0; k < m; k++)
+            {
+                if (A[k][0] == i) Three.push_back(A[k][1]);
+                if (A[k][1] == i) Three.push_back(A[k][0]);
+            }
+            continue;
+        }
+        if (find(Four.begin(), Four.end(), i) == Four.end())
+        {
+            N[i] = 4;
+            for (int k = 0; k < m; k++)
+            {
+                if (A[k][0] == i) Four.push_back(A[k][1]);
+                if (A[k][1] == i) Four.push_back(A[k][0]);
+            }
+            continue;
+        }
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        fout << N[i];
+    }
+}
