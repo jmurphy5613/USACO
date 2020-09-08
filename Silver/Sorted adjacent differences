@@ -1,0 +1,53 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main(void)
+{
+    ifstream fin("lemonade.in");
+    ofstream fout("lemonade.out");
+    int t;
+    cin >> t;
+    vector<vector<int>> Print(0, vector<int>());
+    for (int i = 0; i < t; i++)
+    {
+        int n;
+        cin >> n;
+        vector<int> A(n);
+        for (int i = 0; i < n; i++)
+        {
+            cin >> A[i];
+        }
+        sort(A.begin(), A.end());
+        int count = n;
+        bool solved = false;
+        vector<int> temp;
+        while (solved == false)
+        {
+            int num = (count / 2) -1;
+            temp.push_back(A[num]);
+            temp.push_back(A[num + 1]);
+            count -= 2;
+            if (count == 0)
+            {
+                solved = true;
+            }
+        }
+        Print.push_back(temp);
+    }
+    for (int i = 0; i < t; i++)
+    {
+        for (int j = 0; j < Print[i].size(); j++)
+        {
+            cout << Print[i][j] << " ";
+        }
+        cout << "\n";
+    }
+}
