@@ -1,0 +1,38 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <cassert>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+int main(void)
+{
+	ifstream fin("helpcross.in");
+	ofstream fout("helpcross.out");
+	int C, N, s, e;
+	fin >> C >> N;
+	multiset<long long> T;
+	for (int i = 0; i < C; i++) { fin >> s; T.insert(s); }
+	vector<pair<int, int>> A;
+	for (int i = 0; i < N; i++) { fin >> s >> e; A.push_back({ e, s }); }
+	sort(A.begin(), A.end());
+	int count = 0;
+	for (int i = 0; i < N; i++)
+	{
+		auto chicken = T.lower_bound(A[i].second);
+		if (chicken != T.end() && *chicken <= A[i].first)
+		{
+			count++;
+			T.erase(chicken);
+		}
+	}
+	fout << count;
+}
+/* THOUGHT PROCESS:
+get the cow times from standard input and sort them in terms of the 
+last number. Iterate through the cow times in order.
+*/
