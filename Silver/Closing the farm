@@ -1,0 +1,77 @@
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+#include <queue>
+#include <iostream>
+#include <stack>
+using namespace std;
+vector<int> Adj[3000];
+vector<string> answer;
+static void dfs(int start, int goal)
+{
+	set<int> seen;
+	stack<int> stack;
+	stack.push(start);
+	while (!stack.empty())
+	{
+		int current = stack.top();
+		stack.pop();
+		if (find(seen.begin(), seen.end(), current) == seen.end())
+		{
+			seen.insert(current);
+		}
+		for (int num : Adj[current])
+		{
+			if (find(seen.begin(), seen.end(), num) == seen.end())
+			{
+				stack.push(num);
+			}
+		}
+	}
+	if (seen.size() == goal) answer.push_back("YES");
+	else answer.push_back("NO");
+}
+int main(void)
+{
+	ifstream fin("closing.in");
+	ofstream fout("closing.out");
+	int N, M, start, end, garbage;
+	cin >> N >> M;
+	for (int i = 0; i < M; i++)
+	{
+		cin >> start >> end;
+		Adj[start].push_back(end);
+		Adj[end].push_back(start);
+	}
+	dfs(1, N);
+	vector<int> numbers;
+	for (int i = 1; i < N + 1; i++)
+	{
+		numbers.push_back(i);
+	}
+	for (int i = 0; i < N - 1; i++)
+	{
+		cin >> garbage;
+		numbers.erase(find(numbers.begin(), numbers.end(), garbage));
+		for (int j = 1; j <= N; j++)
+		{
+			if (find(Adj[j].begin(), Adj[j].end(), garbage) != Adj[j].end())
+			{
+				Adj[j].erase(find(Adj[j].begin(), Adj[j].end(), garbage));
+			}
+		}
+		dfs(numbers[0], numbers.size());
+	}
+	for (int i = 0; i < N; i++)
+	{
+		cout << answer[i] << endl;
+	}
+}
+/* THOUGHT PROCESS:
+Create ajacency list containing all the conections. Initially use dfs to see if the grpah is connected. If it is connceted then print YES. Then iterate through all the numbers and remove them 1
+by one from the graph, after you remove each one, use dfs and maintain a visited nodes set, if the set is the same size as the amound of nodes then you print YES otherwise you print NO
+*/
