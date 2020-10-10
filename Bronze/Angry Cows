@@ -1,0 +1,59 @@
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+#include <queue>
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int simulate(int x, vector<int> hey)
+{
+	int count = 0;
+	int lastRight = x;
+	int time = 1;
+	int pointer = x;
+	while (pointer < hey.size() - 1)
+	{
+		if (hey[pointer + 1] <= hey[lastRight] + time) { pointer++; count++; }
+		else if (hey[lastRight + 1] > hey[lastRight] + time) break;
+		else if (hey[pointer + 1] > hey[lastRight] + time) { lastRight = pointer; time++; }
+	}
+	lastRight = x;
+	pointer = x;
+	time = 1;
+	while (pointer > 0)
+	{
+		if (hey[pointer - 1] >= hey[lastRight] - time) { pointer--; count++; }
+		else if (hey[lastRight - 1] < hey[lastRight] - time) break;
+		else if (hey[pointer - 1] < hey[lastRight] - time) { lastRight = pointer; time++; }
+	}
+	return count + 1;
+}
+
+int main(void)
+{
+	ifstream fin("angry.in");
+	ofstream fout("angry.out");
+	int N;
+	cin >> N;
+	vector<int> hay(N);
+	for (int i = 0; i < N; i++)
+	{
+		fin >> hay[i];
+	}
+	sort(hay.begin(), hay.end());
+	int highest = 0;
+	for (int i = 0; i < N; i++)
+	{
+		int o = simulate(i, hay);
+		if (o > highest) highest = o;
+	}
+	fout << highest;
+}	
+/* THOUGHT PROCESS:
+Get input and sort. Iterate through every single number and simulate the process of the explosions. Then output the count as to how many hay bales exploded.
+*/
