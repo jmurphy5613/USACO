@@ -1,0 +1,50 @@
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+#include <queue>
+#include <iostream>
+#include <stack>
+using namespace std;
+char board[9];
+
+bool checkWinner(char c, char b)
+{
+	if ((board[0] == c || board[0] == b) && (board[1] == c || board[1] == b) && (board[2] == c || board[2] == b)) return true;
+	else if ((board[3] == c || board[3] == b) && (board[4] == c || board[4] == b) && (board[5] == c || board[5] == b)) return true;
+	else if ((board[6] == c || board[6] == b) && (board[7] == c || board[7] == b) && (board[8] == c || board[8] == b)) return true;
+	else if ((board[0] == c || board[0] == b) && (board[3] == c || board[3] == b) && (board[6] == c || board[6] == b)) return true;
+	else if ((board[1] == c || board[1] == b) && (board[4] == c || board[4] == b) && (board[7] == c || board[7] == b)) return true;
+	else if ((board[2] == c || board[2] == b) && (board[5] == c || board[5] == b) && (board[8] == c || board[8] == b)) return true;
+	else if ((board[0] == c || board[0] == b) && (board[4] == c || board[4] == b) && (board[8] == c || board[8] == b)) return true;
+	else if ((board[2] == c || board[2] == b) && (board[4] == c || board[4] == b) && (board[6] == c || board[6] == b)) return true;
+	else return false;
+
+}
+
+int main(void)
+{
+	ifstream fin("tttt.in");
+	ofstream fout("tttt.out");
+	char current;
+	int count1 = 0;
+	int count2 = 0;
+	set<char> characters;
+	for (int i = 0; i < 9; i++) { fin >> current; if (characters.find(current) == characters.end()) characters.insert(current); board[i] = current; }
+	for (char c : characters)
+	{
+		for (char t : characters)
+		{
+			if (checkWinner(c, t) == true && c == t) count1++;
+			else if (checkWinner(c, t)) count2++;
+		}
+	}
+	fout << count1 << endl << count2 / 2;
+}
+/* THOUGHT PROCESS:
+Get an array that contains all the unique letters in the board. First go through each character and find out if they had any victories. Then check all the pairs of letters
+and loop through and check if they had any victories
+*/
