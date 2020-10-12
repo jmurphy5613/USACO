@@ -1,0 +1,75 @@
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+#include <queue>
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main(void)
+{
+	ifstream fin("notlast.in");
+	ofstream fout("notlast.out");
+	int N, x;
+	fin >> N;
+	//Bessie, Elsie, Daisy, Gertie, Annabelle, Maggie, and Henrietta
+	int Bessie = 0;
+	int Elsie = 0;
+	int Daisy = 0;
+	int Gertie = 0;
+	int Annabelle = 0;
+	int Maggie = 0;
+	int Henrietta = 0;
+	for (int i = 0; i < N; i++)
+	{
+		string name;
+		fin >> name >> x;
+		if (name == "Bessie") Bessie += x;
+		if (name == "Elsie") Elsie += x;
+		if (name == "Daisy") Daisy += x;
+		if (name == "Gertie") Gertie += x;
+		if (name == "Annabelle") Annabelle += x;
+		if (name == "Maggie") Maggie += x;
+		if (name == "Henrietta") Henrietta += x;
+	}
+	vector<int> nums = { Bessie, Elsie, Daisy, Gertie, Annabelle, Maggie, Henrietta };
+	int min = 100000;
+	for (int i = 0; i < 7; i++)
+	{
+		if (nums[i] < min) min = nums[i];
+	}
+	int secondMin = 100000;
+	for (int i = 0; i < 7; i++)
+	{
+		if (nums[i] < secondMin && nums[i] != min) secondMin = nums[i];
+	}
+	int count = 0;
+	if (secondMin == 100000) { fout << "Tie" << endl; return(0); }
+	else
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			if (nums[i] == secondMin) count++;
+		}
+	}
+	if (count > 1) { fout << "Tie" << endl; return(0); }
+	else 
+	{
+		if (secondMin == Bessie) fout << "Bessie" << endl;
+		if (secondMin == Elsie) fout << "Elsie" << endl;
+		if (secondMin == Daisy) fout << "Daisy" << endl;
+		if (secondMin == Gertie) fout << "Gertie" << endl;
+		if (secondMin == Annabelle) fout << "Annabelle" << endl;
+		if (secondMin == Maggie) fout << "Maggie" << endl;
+		if (secondMin == Henrietta) fout << "Henrietta" << endl;
+	}
+
+}	
+/* THOUGHT PROCESS:
+Get the input and figure out the smallest number among the nums. Then iterate through the the nums again and check for the smallest num that is not equal to the previous smallest
+number. At the end if there is no number in the secondMin then it is a tie. Iterate through nums again and if secondMin apeares more than once than it is a tie.
+*/
