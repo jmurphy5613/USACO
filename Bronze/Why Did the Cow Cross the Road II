@@ -1,0 +1,46 @@
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <queue>
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main(void)
+{
+	ifstream fin("circlecross.in");
+	ofstream fout("circlecross.out");
+	string field;
+	fin >> field;
+	vector<pair<int, int>> positions;
+	for (char c = 'A'; c <= 'Z'; c++)
+	{
+		int index1 = -1;
+		int index2 = -1;
+		for (int i = 0; i < field.length(); i++)
+		{
+			if (field[i] == c && index1 == -1) index1 = i;
+			else if (field[i] == c && index2 == -1) index2 = i;
+		}
+		positions.push_back({ index1, index2 });
+	}
+	int count = 0;
+	for (auto element : positions)
+	{
+		for (auto element2 : positions)
+		{
+			if (element2.first > element.first && element2.first < element.second && element2.second > element.second)
+			{
+				count++;
+			}
+		}
+	}
+	fout << count;
+}	
+/* THOUGHT PROCESS:
+Get the input and get the index of both of the iterations of each letter and store it in a vector pair. Iterate through every character, and compare it to every other character and see if they
+would colide. An example of two chars colliding is ADCABBDC, A and D are a pair because both iterations of D are to the right of their coresponding A value.
+*/
