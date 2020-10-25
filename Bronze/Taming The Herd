@@ -1,0 +1,41 @@
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+#include <queue>
+#include <iostream>
+#include <stack>
+using namespace std;
+int main(void)
+{
+	ifstream fin("taming.in");
+	ofstream fout("taming.out");
+	int N;
+	fin >> N;
+	vector<int> numbers(N);
+	for (int i = 0; i < N; i++) fin >> numbers[i];
+	numbers[0] = 0;
+	int min = 0;
+	int max = 0;
+	int prev = -10000;
+	int Previndex = -20000;
+	int current = N - 1;
+
+	while (current >= 0)
+	{
+		if (current == Previndex - prev) { min++; max++; }
+		else if (numbers[current] == 0) { min++; max++; }
+		else if (numbers[current] == -1 && prev == -10000) max++;
+		else if (numbers[current] > -1) { prev = numbers[current]; Previndex = current; }
+		else if (current >= Previndex - prev) { current--; continue; }
+		else if (numbers[current] == -1 && current < Previndex - prev) max++;
+		current--;
+	}
+	fout << min << " " << max;
+}
+/* THOUGHT PROCESS:
+
+*/
