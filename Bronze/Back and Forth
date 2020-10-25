@@ -1,0 +1,80 @@
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+#include <queue>
+#include <iostream>
+#include <stack>
+using namespace std;
+vector<int> possible;
+void Friday(int starting, vector<int> one, vector<int> second)
+{
+	for (int i = 0; i < 11; i++)
+	{
+		int currentStarting = starting;
+		vector<int> currentOne = one;
+		vector<int> currentSecond = second;
+		currentStarting += currentSecond[i];
+		currentOne.push_back(currentSecond[i]);
+		currentSecond.erase(currentSecond.begin() + i);
+		if (find(possible.begin(), possible.end(), currentStarting) == possible.end()) possible.push_back(currentStarting);
+	}
+}
+void Thursday(int starting, vector<int> one, vector<int> second)
+{
+	for (int i = 0; i < 10; i++)
+	{
+		int currentStarting = starting;
+		vector<int> currentOne = one;
+		vector<int> currentSecond = second;
+		currentStarting -= currentOne[i];
+		currentSecond.push_back(currentOne[i]);
+		currentOne.erase(currentOne.begin() + i);
+		Friday(currentStarting, currentOne, currentSecond);
+	}
+}
+void Wednesday(int starting, vector<int> one, vector<int> second) //second barn
+{
+	for (int i = 0; i < 11; i++)
+	{
+		int currentStarting = starting;
+		vector<int> currentOne = one;
+		vector<int> currentSecond = second;
+		currentStarting += currentSecond[i];
+		currentOne.push_back(currentSecond[i]);
+		currentSecond.erase(currentSecond.begin() + i);
+		Thursday(currentStarting, currentOne, currentSecond);
+	}
+}
+
+void Tuesday(int starting, vector<int> one, vector<int> second) //first barn
+{
+	for (int i = 0; i < 10; i++)
+	{
+		int currentStarting = starting;
+		vector<int> currentOne = one;
+		vector<int> currentSecond = second;
+		currentStarting -= currentOne[i];
+		currentSecond.push_back(currentOne[i]);
+		currentOne.erase(currentOne.begin() + i);
+		Wednesday(currentStarting, currentOne, currentSecond);
+	}
+}
+
+int main(void)
+{
+	ifstream fin("backforth.in");
+	ofstream fout("backforth.out");
+	int x;
+	vector<int> first;
+	vector<int> second;
+	for (int i = 0; i < 10; i++) { fin >> x; first.push_back(x); }
+	for (int i = 0; i < 10; i++) { fin >> x; second.push_back(x); }
+	Tuesday(1000, first, second);
+	fout << possible.size();
+}
+/* THOUGHT PROCESS:
+*/
