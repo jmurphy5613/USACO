@@ -1,0 +1,72 @@
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+#include <queue>
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main(void)
+{
+	ifstream fin("tracing.in");
+	ofstream fout("tracing.out");
+	int N, T, x, y, t;
+	string string;
+	fin >> N >> T >> string;
+	vector<pair<int, pair<int, int>>> infections;
+	for (int i = 0; i < T; i++) { fin >> t >> x >> y; infections.push_back({ t, { x, y } }); }
+	sort(infections.begin(), infections.end());
+
+	int smallestK = T;
+	int largestK = 0;
+	int countPatientZero = 0;
+	for (int i = 1; i <= N; i++)
+	{
+		bool alreadyCorrect = false;
+		for (int k = 0; k <= T; k++)
+		{
+			bool inf[101] = { 0 };
+			inf[i] = true;
+			vector<int> currentK(N + 1);
+			for (auto element : infections)
+			{
+				if (inf[element.second.first] && !inf[element.second.second] && currentK[element.second.first] < k)
+				{
+					inf[element.second.second] = true;
+					currentK[element.second.first] += 1;
+				}
+				else if (!inf[element.second.first] && inf[element.second.second] && currentK[element.second.second] < k)
+				{
+					inf[element.second.first] = true;
+					currentK[element.second.second] += 1;
+				}
+				else if (inf[element.second.first] && inf[element.second.second])
+				{
+					currentK[element.second.first] += 1;
+					currentK[element.second.second] += 1;
+				}
+			}
+			bool correct = true;
+			for (int o = 0; o < string.size(); o++)
+			{
+				if (inf[o + 1] == true && string[o] == 49) continue;
+				else if (inf[o + 1] == false && string[o] == 48) continue;
+				else correct = false;
+			}
+			if (correct && !alreadyCorrect) { countPatientZero++; alreadyCorrect = true; }
+			if (correct && k < smallestK) smallestK = k;
+			if (correct && k > largestK) largestK = k;
+
+		}
+	}
+	fout << countPatientZero << " " << smallestK << " ";
+	if (largestK == T) fout << "Infinity";
+	else fout << largestK;
+}
+/* THOUGHT PROCESS:
+iterate through every possible "patient 0", and every possible K value(0 -> 250) and find the smallest and largest K value. If K == T works than print Infinity	
+*/
