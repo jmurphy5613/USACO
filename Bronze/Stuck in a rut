@@ -1,0 +1,92 @@
+#include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <set>
+#include <string>
+#include <unordered_set>
+#include <queue>
+#include <iostream>
+#include <stack>
+using namespace std;
+
+
+int main(void)
+{
+	int N;
+	cin >> N;
+	vector<pair<int, pair<char, int>>> points; //x, direction, y
+	vector<pair<int, pair<char, int>>> points2;
+	char c;
+	int x, y;
+	for (int i = 0; i < N; i++)
+	{
+		cin >> c >> x >> y;
+		points.push_back({ x, {c, y} });
+		points2.push_back({ x, {c, y} });
+	}
+	sort(points.begin(), points.end());
+
+	vector<pair<int, pair<char, int>>> currentEast; //y , direction, x
+	vector<int> lengths(N);
+	vector<int> lengths2(N);
+	for (int i = 0; i < N; i++) lengths[i] = 0;
+	int count = 0;
+	for (auto element : points)
+	{
+		sort(currentEast.begin(), currentEast.end());
+		if (element.second.first == 'E') currentEast.push_back({ element.second.second, {element.second.first, element.first} });
+		else
+		{
+			for (auto east : currentEast) //go through each current east
+			{
+				int count3 = 0;
+				if (east.first > element.second.second) //do they collide?
+				{
+					if ((element.first - east.second.second) < (east.first - element.second.second)) //which one get there first?
+					{
+						lengths[count] = (east.first - element.second.second);	
+						break;															//the east gets there first
+					}
+					else if((element.first - east.second.second) > (east.first - element.second.second))
+					{
+						int count2 = 0;
+						for (auto find : points)							// the North gets there first
+						{
+							if (find.first == east.second.second && find.second.second == east.first) lengths[count2] = (element.first - east.second.second);
+							else count2++;
+						}
+						currentEast.erase(currentEast.begin() + count3);
+					}
+					count3++;
+				}
+
+			}
+		}
+		count++;
+	}
+	count = 0;
+	for (auto element : points)
+	{
+		int num = 0;
+		for (auto unsort : points2)
+		{
+			if (element.first == unsort.first && element.second.second == unsort.second.second)
+			{
+				lengths2[num] = lengths[count];
+				break;
+			}
+			num++;
+		}
+		count++;
+	}
+	for (int i = 0; i < N; i++)
+	{
+		if (lengths2[i] == 0) cout << "Infinity" << endl;
+		else cout << lengths2[i] << endl;
+	}
+
+}
+/* THOUGHT PROCESS:
+*/
+
